@@ -23,7 +23,7 @@
     }
     input[type="number"] {
       padding: 6px;
-      width: 120px;
+      width: 140px;
     }
     select {
       padding: 6px;
@@ -53,6 +53,13 @@
 
   <label for="discount">Pasirinkite nuolaidą (%):</label><br>
   <select id="discount">
+    <option value="30">30%</option>
+    <option value="32">32%</option>
+    <option value="35">35%</option>
+    <option value="40">40%</option>
+    <option value="42">42%</option>
+    <option value="45">45%</option>
+    <option value="47">47%</option>
     <option value="50">50%</option>
     <option value="55">55%</option>
     <option value="60">60%</option>
@@ -77,8 +84,20 @@
         return;
       }
 
-      const discountFraction = (100 - discount) / 100;
-      const charge = amount * discountFraction;
+      // Skaičiuojame pradinę sumą pagal nuolaidą
+      let charge = amount * (1 - discount / 100);
+
+      // Truputį sumažinam mokėtiną sumą kaip „bonusą“ už didesnę sumą
+      if (amount >= 20) {
+        charge *= 0.95; // 5% pigiau
+      } else if (amount >= 15) {
+        charge *= 0.97;
+      } else if (amount >= 10) {
+        charge *= 0.98;
+      }
+
+      // Suapvalinam iki artimiausio 0.05 kaip parduotuvėse
+      charge = Math.round(charge * 20) / 20;
 
       document.getElementById("result").textContent = `Imk: ${charge.toFixed(2)} €`;
     }
