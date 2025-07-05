@@ -77,7 +77,9 @@
         return;
       }
 
-      const charge = amount / 2;
+      const discountFraction = (100 - discount) / 100;
+      const charge = amount * discountFraction;
+
       document.getElementById("result").textContent = `Imk: ${charge.toFixed(2)} €`;
     }
   </script>
